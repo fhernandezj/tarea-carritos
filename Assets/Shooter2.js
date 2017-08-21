@@ -1,6 +1,6 @@
 ﻿#pragma strict
 var bullet : Rigidbody;
-var power : float = 1500;
+var power : float = 150000;
 
 function Start () {
 	
