@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{A1BE7DE9-9397-7EAA-E9C8-46DCCE7CB178}</ProjectGuid>
+    <ProjectGuid>{675109D3-7026-B9E1-EC44-F295E3674C8E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -51,9 +51,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Llanta.cs" />
-     <Compile Include="Assets\Motor.cs" />
-     <Compile Include="Assets\TireToWheel.cs" />
+     <Compile Include="Assets\Scripts\ColisionBala.cs" />
+     <Compile Include="Assets\Scripts\Llanta.cs" />
+     <Compile Include="Assets\Scripts\Motor1.cs" />
+     <Compile Include="Assets\Scripts\Motor2.cs" />
+     <Compile Include="Assets\Scripts\TireToWheel.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
