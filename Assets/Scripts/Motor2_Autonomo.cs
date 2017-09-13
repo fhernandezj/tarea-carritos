@@ -22,13 +22,17 @@ public class Motor2_Autonomo : MonoBehaviour {
 	public GameObject target;
 	public float angulo, distancia;
 	public Vector3 productoCruz;
-	//private float[] targetPosX = new float[]{240, 281, 218, 275, 432, 413, 486, 263};
-	//private float[] targetPosZ = new float[]{110, 176, 298, 326, 322, 217, 116, 66};
 	private float[] targetPosX = new float[]{240, 288, 218, 275, 432, 425, 433, 486, 498, 263};
 	private float[] targetPosZ = new float[]{110, 176, 298, 326, 322, 250, 178, 116, 93, 66};
+	
+	//private float[] targetPosX = new float[]{240, 286, 224, 426, 432, 425, 433, 486, 498, 263};
+	//private float[] targetPosZ = new float[]{110, 176, 286, 320, 322, 250, 178, 116, 93, 66};
+	
 	private int targetsHit = 0;
 
 	private float time_init = 0f;
+	public Rigidbody rigidbody;
+	public float speed;
 	
 	
 	// Use this for initialization
@@ -38,20 +42,51 @@ public class Motor2_Autonomo : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+		
+			speed = rigidbody.velocity.magnitude;
 			angulo = Vector3.Angle(transform.forward, target.transform.position - transform.position);
 			productoCruz = Vector3.Cross(transform.forward, target.transform.position - transform.position);
 			cabrilla = productoCruz.y > 0 ? 1 : -1;
-			if(angulo<5){
+			if(angulo<7.5){
 				cabrilla=0;
 			}
-			if(angulo>75){
+			if(angulo>30){
+				chancleta=0;
+				frenoDeMano=1;
+			}else{
+				chancleta=1;
+				frenoDeMano=0;
+			}	
+			/*
+			if(speed<10 && angulo>30){
 				chancleta=0;
 				frenoDeMano=1;
 			}else{
 				chancleta=1;
 				frenoDeMano=0;
 			}			
+			
+			if(speed>=10 && speed<15 && angulo>20){
+				chancleta=0;
+				frenoDeMano=1;
+			}else{
+				chancleta=1;
+				frenoDeMano=0;
+			}
+			
+			if(speed>=15 && angulo>10){
+				chancleta=0;
+				frenoDeMano=1;
+			}else{
+				chancleta=1;
+				frenoDeMano=0;
+			}*/
+			
+			if(speed<3){
+				chancleta = 1;
+				frenoDeMano = 0;
+			}
+			
 			distancia = Vector3.Distance (transform.position, target.transform.position);
 			if(distancia < 5.0){
 				targetsHit = targetsHit + 1;
