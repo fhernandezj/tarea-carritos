@@ -51,10 +51,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\calcularPosicion.cs" />
+     <Compile Include="Assets\calcularPosicion_Autonomo.cs" />
      <Compile Include="Assets\Scripts\ColisionBala.cs" />
      <Compile Include="Assets\Scripts\Llanta.cs" />
      <Compile Include="Assets\Scripts\Motor1.cs" />
      <Compile Include="Assets\Scripts\Motor2.cs" />
+     <Compile Include="Assets\Scripts\Motor2_Autonomo.cs" />
      <Compile Include="Assets\Scripts\TireToWheel.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

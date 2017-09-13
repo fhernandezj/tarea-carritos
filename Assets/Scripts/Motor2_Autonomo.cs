@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Motor1 : MonoBehaviour {
+public class Motor2_Autonomo : MonoBehaviour {
 	public AudioSource audio_hit, audio_level;
     public WheelCollider LDI, LDD, LTI, LTD;
     public float FuerzaDeMotor;
@@ -18,44 +18,48 @@ public class Motor1 : MonoBehaviour {
 	int vueltas = 0;
 	public UnityEngine.UI.Text text, tiempo;
 	
+	
+	public GameObject target;
+	public float angulo, distancia;
+	public Vector3 productoCruz;
+	//private float[] targetPosX = new float[]{240, 281, 218, 275, 432, 413, 486, 263};
+	//private float[] targetPosZ = new float[]{110, 176, 298, 326, 322, 217, 116, 66};
+	private float[] targetPosX = new float[]{240, 288, 218, 275, 432, 425, 433, 486, 498, 263};
+	private float[] targetPosZ = new float[]{110, 176, 298, 326, 322, 250, 178, 116, 93, 66};
+	private int targetsHit = 0;
+
 	private float time_init = 0f;
+	
 	
 	// Use this for initialization
 	void Start () {
-		//audio_hit = GetComponent<AudioSource>();
-		//audio_level = GetComponent<AudioSource>();
+		//time_init = 0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            cabrilla = 1;
-        }else if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            cabrilla = -1;
-        } else
-		{
-			cabrilla = 0;
-		}
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            chancleta = 1;
-        } else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            chancleta = -1;
-		}else{
-			chancleta = 0;
-		}
+
+			angulo = Vector3.Angle(transform.forward, target.transform.position - transform.position);
+			productoCruz = Vector3.Cross(transform.forward, target.transform.position - transform.position);
+			cabrilla = productoCruz.y > 0 ? 1 : -1;
+			if(angulo<5){
+				cabrilla=0;
+			}
+			if(angulo>75){
+				chancleta=0;
+				frenoDeMano=1;
+			}else{
+				chancleta=1;
+				frenoDeMano=0;
+			}			
+			distancia = Vector3.Distance (transform.position, target.transform.position);
+			if(distancia < 5.0){
+				targetsHit = targetsHit + 1;
+				target.transform.position = new Vector3(targetPosX[targetsHit%10], -0.18f, targetPosZ[targetsHit%10]);
+			}
+	
 		
-		if (Input.GetKey(KeyCode.RightShift))
-        {
-            frenoDeMano = 1;
-        }else{
-			frenoDeMano = 0;
-		}
 		
-        
         LDI.motorTorque = chancleta * FuerzaDeMotor * Time.deltaTime;
         LDD.motorTorque = chancleta * FuerzaDeMotor * Time.deltaTime;
         LDD.steerAngle = cabrilla * rotacionMaximaDeLlantas;
@@ -84,7 +88,7 @@ public class Motor1 : MonoBehaviour {
 					puntaje = puntaje + 100;
 					audio_level.Play();
 					if(estaciones==1){
-						vueltas = vueltas + 1;
+						vueltas = vueltas + 1;						
 						if(vueltas > 1){
 							time_init=0f;
 							puntaje = puntaje + 100;
@@ -107,8 +111,8 @@ public class Motor1 : MonoBehaviour {
 		}	
 		
         text.text = "Puntaje: " + puntaje + " Vueltas: " + vueltas;
-		
-		time_init += Time.deltaTime;
+				
+        time_init += Time.deltaTime;
 		int seg = (int)(time_init%60);
 		int min = (int)(time_init/60)%60;
 		int hours = (int)(time_init/3600)%24;
@@ -118,8 +122,8 @@ public class Motor1 : MonoBehaviour {
 	
 	void OnCollisionEnter (Collision col)
     {
-        if(col.gameObject.name.Contains("Bala")){
-			puntaje = puntaje - 10;			
+		if(col.gameObject.name.Contains("Bala")){
+			puntaje = puntaje - 10;		
 			audio_hit.Play();
 		}
     }
