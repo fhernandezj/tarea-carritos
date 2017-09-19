@@ -12,12 +12,12 @@ public class Motor2_Autonomo : MonoBehaviour {
     public float frenoDeMano;
     public float rotacionMaximaDeLlantas;
     public float FuerzaDeFrenoDeMano;
-	public int estaciones = 0;
+	public int estaciones = 0, checkpoints=0;
 	double[] est = new double[]{96.5, 177.9, 297.0, 336, 304.8, 212.7, 87.6, 366.4};
-	int puntaje = 0;
+	public int puntaje = 0;
 	int vueltas = 0;
 	public UnityEngine.UI.Text text, tiempo;
-	
+	public string timer_string = "";	
 	
 	public GameObject target;
 	public float angulo, distancia;
@@ -114,12 +114,14 @@ public class Motor2_Autonomo : MonoBehaviour {
 			if(i==3){
 				if(this.transform.position.x >=est[i] && estaciones==i){
 					estaciones = (i+1)%8;
+					checkpoints++;
 					puntaje = puntaje + 100;
 					audio_level.Play();
 				}
 			}else if(i>=0 && i<=2){
 				if(this.transform.position.z >=est[i] && estaciones==i){
 					estaciones = (i+1)%8;
+					checkpoints++;
 					puntaje = puntaje + 100;
 					audio_level.Play();
 					if(estaciones==1){
@@ -133,12 +135,14 @@ public class Motor2_Autonomo : MonoBehaviour {
 			}else if(i>=4 && i<=6){
 				if(this.transform.position.z <=est[i] && estaciones==i){
 					estaciones = (i+1)%8;
+					checkpoints++;
 					puntaje = puntaje + 100;
 					audio_level.Play();
 				}
 			}else if(i==7){
 				if(this.transform.position.x <=est[i] && estaciones==i){
 					estaciones = (i+1)%8;
+					checkpoints++;
 					puntaje = puntaje + 100;
 					audio_level.Play();
 				}
@@ -151,7 +155,7 @@ public class Motor2_Autonomo : MonoBehaviour {
 		int seg = (int)(time_init%60);
 		int min = (int)(time_init/60)%60;
 		int hours = (int)(time_init/3600)%24;
-		string timer_string = string.Format("{0:0}:{1:00}:{2:00}", hours, min, seg);
+		timer_string = string.Format("{0:0}:{1:00}:{2:00}", hours, min, seg);
 		tiempo.text = timer_string;
     }
 	

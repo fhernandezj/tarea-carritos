@@ -7,8 +7,27 @@ public class calcularPosicion : MonoBehaviour {
 
 	public GameObject c1;
 	public GameObject c2;
-	public UnityEngine.UI.Text pos1, pos2;
+	public UnityEngine.UI.Text pos1, pos2, res1, res2;
 	float[] posiciones = new float[]{96.5f, 177.9f, 297.0f, 336f, 304.8f, 212.7f, 87.6f, 366.4f};
+	private bool sent = false;
+	public int est_ganar = 9;
+	
+	[SerializeField]
+    private string BASE_URL = "https://docs.google.com/a/uninorte.edu.co/forms/d/e/1FAIpQLSedyB_RucEm2VZOrf7mu8z1DW_AT1XhdzppR5ZSQaSQgHk0Xw/formResponse";
+
+    IEnumerator Post(string jugador, string tiempo, string puntaje) {
+        WWWForm form = new WWWForm();
+        form.AddField("entry.82908517", jugador);
+        form.AddField("entry.326075018", tiempo);
+        form.AddField("entry.848506399", puntaje);
+        byte[] rawData = form.data;
+        WWW www = new WWW(BASE_URL, rawData);
+        yield return www;
+    }
+	
+    public void Send() {
+        StartCoroutine(Post("JugadorTest", "0:01:35", "950"));
+    }
 	
 	// Use this for initialization
 	void Start () {
@@ -17,8 +36,8 @@ public class calcularPosicion : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		int est1 = c1.GetComponent<Motor1>().estaciones;
-		int est2 = c2.GetComponent<Motor2>().estaciones;
+		int est1 = c1.GetComponent<Motor1>().checkpoints;
+		int est2 = c2.GetComponent<Motor2>().checkpoints;
 		if(est1>est2){
 			pos1.text = "Posición: 1/2";
 			pos2.text = "Posición: 2/2";
@@ -41,6 +60,24 @@ public class calcularPosicion : MonoBehaviour {
 				pos2.text = "Posición: 1/2";
 				pos1.text = "Posición: 2/2";
 			}
+		}
+		
+		if(est1==est_ganar && !sent){
+			sent = true;
+			res1.text = "YOU WIN";
+			res2.text = "YOU LOOSE";
+			string puntaje = "" + c1.GetComponent<Motor1>().puntaje;
+			string tiempo = c1.GetComponent<Motor1>().timer_string;
+			StartCoroutine(Post("Jugador1", tiempo, puntaje));
+		}
+		
+		if(est2==est_ganar && !sent){
+			sent = true;
+			res2.text = "YOU WIN";
+			res1.text = "YOU LOOSE";
+			string puntaje = "" + c2.GetComponent<Motor2>().puntaje;
+			string tiempo = c2.GetComponent<Motor2>().timer_string;
+			StartCoroutine(Post("Jugador2", tiempo, puntaje));
 		}
 	}
 }
